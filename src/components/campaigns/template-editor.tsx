@@ -7,8 +7,8 @@ import { Input, Label, Textarea } from "@/components/ui/input";
 
 export function TemplateEditor({ campaignId }: { campaignId: string }) {
   const [step, setStep] = useState(0);
-  const [subject, setSubject] = useState("Hi {{first_name|there}}");
-  const [htmlBody, setHtmlBody] = useState("<p>Hi {{first_name|there}},</p><p>We help {{company|companies}} with outreach.</p>");
+  const [subject, setSubject] = useState("");
+  const [htmlBody, setHtmlBody] = useState("");
   const [textBody, setTextBody] = useState("");
   const [preview, setPreview] = useState<{ subject: string; html: string; text: string } | null>(null);
   const [testTo, setTestTo] = useState("");
@@ -66,14 +66,14 @@ export function TemplateEditor({ campaignId }: { campaignId: string }) {
       </CardHeader>
       <CardContent className="space-y-3">
         <p className="text-[12.5px] text-muted">
-          Variables: {"{{first_name|there}}"}, {"{{last_name}}"}, {"{{company}}"}, {"{{email}}"}, plus custom CSV columns as {"{{column_name}}"}. Scripts are stripped. Leave this blank to keep AI copy for that step.
+          Variables: {"{{first_name|there}}"}, {"{{last_name}}"}, {"{{company}}"}, {"{{email}}"}, plus custom CSV columns as {"{{column_name}}"}. Scripts are stripped. Leave this blank to keep the AI draft. Saving text here sends these exact words instead.
         </p>
         <Label>Sequence step</Label>
         <Input type="number" min={0} max={3} value={step} onChange={(e) => setStep(Number(e.target.value))} />
         <Label>Subject</Label>
-        <Input value={subject} onChange={(e) => setSubject(e.target.value)} />
+        <Input value={subject} onChange={(e) => setSubject(e.target.value)} placeholder="Hi {{first_name|there}}" />
         <Label>HTML body</Label>
-        <Textarea className="min-h-36 font-mono" value={htmlBody} onChange={(e) => setHtmlBody(e.target.value)} />
+        <Textarea className="min-h-36 font-mono" value={htmlBody} onChange={(e) => setHtmlBody(e.target.value)} placeholder={"<p>Hi {{first_name|there}},</p><p>We help {{company|companies}} with outreach.</p>"} />
         <Label>Plain text fallback</Label>
         <Textarea value={textBody} onChange={(e) => setTextBody(e.target.value)} placeholder="Generated from the HTML if left empty" />
         {error && <p className="text-[12.5px] text-danger">{error}</p>}

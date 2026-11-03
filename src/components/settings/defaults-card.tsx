@@ -82,6 +82,7 @@ export function DefaultsCard() {
           <div>
             <Label htmlFor="default-cta">Default CTA link</Label>
             <Input id="default-cta" value={form.ctaLink} onChange={(e) => setForm({ ...form, ctaLink: e.target.value })} placeholder="https://" />
+            <FieldHint>Your real page, or blank. example.com is removed when you save, so it cannot be copied onto a new list.</FieldHint>
           </div>
           <div>
             <Label htmlFor="default-early-bird">Default early-bird line</Label>

@@ -25,6 +25,7 @@ import { FunnelChart } from "./funnel-chart";
 import { ActivityFeed } from "./activity-feed";
 import { cn } from "@/lib/utils";
 import { RunDispatchButton } from "@/components/layout/run-dispatch-button";
+import { GuideNavigator } from "@/components/guide/navigator";
 import type { Campaign, SendLog } from "@/lib/types";
 
 interface Overview {
@@ -171,6 +172,10 @@ export function AnalyticsDashboard({ campaigns }: { campaigns: Campaign[] }) {
             ))}
           </Select>
         </div>
+      </div>
+
+      <div className="px-6 pt-5">
+        <GuideNavigator />
       </div>
 
       {error && !data ? (

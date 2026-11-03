@@ -3,11 +3,22 @@ import { PageHeader } from "@/components/ui/page-header";
 import { LeadListForm } from "@/components/lead-lists/lead-list-form";
 import { getCampaign, getUiDefaults } from "@/lib/data";
 
+function usableCta(link: string): string {
+  try {
+    const host = new URL(link).hostname.toLowerCase().replace(/^www\./, "");
+    if (host === "example.com" || host === "example.org" || host === "localhost" || host.endsWith(".example")) return "";
+  } catch {
+    return "";
+  }
+  return link;
+}
+
 export default async function NewLeadListPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const campaign = await getCampaign(id);
   if (!campaign) notFound();
   const defaults = await getUiDefaults();
+  const ctaLink = usableCta(defaults.ctaLink);
 
   return (
     <div>
@@ -19,7 +30,7 @@ export default async function NewLeadListPage({ params }: { params: Promise<{ id
           mode="create"
           defaultSenderName={defaults.defaultSenderName}
           defaultSenderTitle={defaults.defaultSenderTitle}
-          defaultCtaLink={defaults.ctaLink}
+          defaultCtaLink={ctaLink}
           defaultEarlyBirdLine={defaults.earlyBirdLine}
         />
       </div>

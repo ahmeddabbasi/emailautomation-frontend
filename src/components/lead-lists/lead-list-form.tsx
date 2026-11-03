@@ -354,6 +354,7 @@ export function LeadListForm({
           <div>
             <Label>CTA link</Label>
             <Input value={form.ctaLink} onChange={(e) => update("ctaLink", e.target.value)} placeholder="https://" />
+            <FieldHint>Leave this blank when the email should not include a link. example.com is a placeholder and is not saved.</FieldHint>
           </div>
           <div>
             <Label>Early bird line</Label>
