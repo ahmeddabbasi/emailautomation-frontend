@@ -35,8 +35,11 @@ export function GenerationProgress({ list }: { list: LeadList }) {
       let done = false;
       while (!done) {
         const res = await fetch(`/api/lead-lists/${list.id}/generate`, { method: "POST" });
-        const data: BatchResult = await res.json();
-        if (!res.ok) throw new Error((data as unknown as { error?: string }).error ?? "Generation failed");
+        const data = (await res.json().catch(() => null)) as BatchResult | { error?: string } | null;
+        if (!res.ok || !data || !("done" in data)) {
+          const message = data && "error" in data && data.error ? data.error : res.status === 504 ? "That draft took too long. Finished drafts are saved. Run generation again." : "Generation failed";
+          throw new Error(message);
+        }
         setCompleted((c) => c + data.succeeded);
         setFailedCount((f) => f + data.failed);
         done = data.done;
