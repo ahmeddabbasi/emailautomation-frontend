@@ -15,7 +15,7 @@ import type { Campaign, SendLog } from "@/lib/types";
 
 const PAGE_SIZE = 12;
 
-const PROVIDER_LABELS = { gemini: "Gemini", groq: "Groq" } as const;
+const PROVIDER_LABELS = { gemini: "Gemini", groq: "Groq", openai: "OpenAI" } as const;
 
 type DisplayStatus = "sent" | "failed" | "bounced";
 
@@ -30,7 +30,7 @@ export function HistoryTable({ logs, campaigns }: { logs: SendLog[]; campaigns: 
   const [query, setQuery] = useState("");
   const [campaignFilter, setCampaignFilter] = useState("all");
   const [statusFilter, setStatusFilter] = useState<DisplayStatus | "all">("all");
-  const [providerFilter, setProviderFilter] = useState<"all" | "gemini" | "groq">("all");
+  const [providerFilter, setProviderFilter] = useState<"all" | "gemini" | "groq" | "openai">("all");
   const [fromDate, setFromDate] = useState("");
   const [toDate, setToDate] = useState("");
   const [page, setPage] = useState(1);
@@ -102,13 +102,14 @@ export function HistoryTable({ logs, campaigns }: { logs: SendLog[]; campaigns: 
           aria-label="Model"
           value={providerFilter}
           onChange={(e) => {
-            setProviderFilter(e.target.value as "all" | "gemini" | "groq");
+            setProviderFilter(e.target.value as "all" | "gemini" | "groq" | "openai");
             setPage(1);
           }}
         >
           <option value="all">All models</option>
           <option value="gemini">Gemini</option>
           <option value="groq">Groq</option>
+          <option value="openai">OpenAI</option>
         </Select>
         <div className="w-36 shrink-0">
           <Input

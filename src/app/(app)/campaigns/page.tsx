@@ -16,7 +16,7 @@ export default async function CampaignsPage() {
         title="Campaigns"
         description="Every outreach campaign, active or paused."
         actions={
-          <Link href="/campaigns/new">
+          <Link href="/campaigns/new" data-sim-target="new-campaign">
             <Button variant="primary" size="sm">
               <Plus size={14} /> New campaign
             </Button>
@@ -31,7 +31,7 @@ export default async function CampaignsPage() {
             title="No campaigns yet"
             description="Create a campaign, then add one or more lead lists under it, each with its own targeting, template, and send schedule."
             action={
-              <Link href="/campaigns/new">
+              <Link href="/campaigns/new" data-sim-target="new-campaign">
                 <Button variant="primary" size="sm">
                   <Plus size={14} /> New campaign
                 </Button>
@@ -51,11 +51,12 @@ export default async function CampaignsPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-border bg-surface">
-                {campaigns.map((campaign) => (
+                {campaigns.map((campaign, index) => (
                   <tr key={campaign.id} className="group hover:bg-surface-hover">
                     <td className="px-4 py-3">
                       <Link
                         href={`/campaigns/${campaign.id}`}
+                        data-sim-target={index === 0 ? "select-campaign" : undefined}
                         className="text-[13.5px] font-medium text-fg group-hover:text-accent group-hover:underline"
                       >
                         {campaign.name}

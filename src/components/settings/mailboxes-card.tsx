@@ -107,7 +107,7 @@ export function MailboxesCard() {
   }
 
   return (
-    <Card className="mx-6 mb-6">
+    <Card>
       <CardHeader>
         <CardTitle>Mailboxes</CardTitle>
       </CardHeader>
@@ -126,7 +126,7 @@ export function MailboxesCard() {
           </div>
           <div>
             <Label>Zoho host</Label>
-            <Select value={form.smtpHost} onChange={(e) => setForm({ ...form, smtpHost: e.target.value, imapHost: e.target.value.replace("smtp", "imap").replace("smtppro", "imap") })}>
+            <Select className="h-9 w-full" value={form.smtpHost} onChange={(e) => setForm({ ...form, smtpHost: e.target.value, imapHost: e.target.value.replace("smtp", "imap").replace("smtppro", "imap") })}>
               {ZOHO_SMTP_HOSTS.map((host) => (
                 <option key={host.host} value={host.host}>{host.label}</option>
               ))}
@@ -135,6 +135,7 @@ export function MailboxesCard() {
           <div>
             <Label>Security</Label>
             <Select
+              className="h-9 w-full"
               value={form.smtpSecurity}
               onChange={(e) => {
                 const smtpSecurity = e.target.value as "ssl" | "starttls";
@@ -174,16 +175,17 @@ export function MailboxesCard() {
 
         <ul className="divide-y divide-border rounded-md border border-border">
           {mailboxes.map((mailbox) => (
-            <li key={mailbox.id} className="space-y-2 px-3 py-3">
-              <div className="flex items-center justify-between gap-3">
-                <div>
-                  <p className="text-[13.5px] font-medium text-fg">{mailbox.displayName} · {mailbox.email}</p>
-                  <p className="text-[12px] text-muted">
+            <li key={mailbox.id} className="space-y-3 px-4 py-4">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="text-[13.5px] font-medium text-fg">{mailbox.displayName}</p>
+                  <p className="truncate text-[12.5px] text-muted">{mailbox.email}</p>
+                  <p className="mt-1 text-[12px] text-muted">
                     {mailbox.status} · {mailbox.dailyLimit}/day · {mailbox.hourlyLimit}/hour · {mailbox.campaignName ?? "Not linked"}
                   </p>
-                  {mailbox.lastError && <p className="text-[12px] text-danger">{mailbox.lastError}</p>}
+                  {mailbox.lastError && <p className="mt-1 text-[12px] text-danger">{mailbox.lastError}</p>}
                 </div>
-                <div className="flex gap-2">
+                <div className="flex shrink-0 gap-2">
                   <Button variant="outline" size="sm" onClick={() => { setEditing(mailbox.id); setForm({ ...EMPTY, ...mailbox, password: "", replyTo: mailbox.replyTo ?? "", imapHost: mailbox.imapHost ?? "", imapPort: mailbox.imapPort ?? 993 }); }}>
                     Edit
                   </Button>
@@ -202,8 +204,8 @@ export function MailboxesCard() {
                   </Button>
                 </div>
               </div>
-              <div className="flex flex-wrap items-center gap-2">
-                <Input className="max-w-xs" placeholder="Test recipient" value={testTo} onChange={(e) => setTestTo(e.target.value)} />
+              <div className="grid gap-2 sm:grid-cols-[minmax(0,16rem)_auto_minmax(0,16rem)] sm:items-center">
+                <Input placeholder="Test recipient" value={testTo} onChange={(e) => setTestTo(e.target.value)} />
                 <Button
                   variant="outline"
                   size="sm"
@@ -223,6 +225,7 @@ export function MailboxesCard() {
                   Test connection
                 </Button>
                 <Select
+                  className="h-9 w-full"
                   value={mailbox.campaignId ?? ""}
                   onChange={async (e) => {
                     await fetch(`/api/mailboxes/${mailbox.id}/link`, {

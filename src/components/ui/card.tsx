@@ -13,7 +13,7 @@ export function Card({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
 export function CardHeader({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn("flex items-center justify-between border-b border-border px-4 py-3", className)}
+      className={cn("flex items-center justify-between gap-3 border-b border-border px-4 py-3", className)}
       {...props}
     />
   );

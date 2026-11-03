@@ -13,15 +13,19 @@ interface GeminiStatus {
 
 export function ProviderNotice() {
   const [status, setStatus] = useState<GeminiStatus | null>(null);
+  const [openAiForced, setOpenAiForced] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
     async function load() {
       try {
-        const res = await fetch("/api/settings/gemini");
-        if (!res.ok) return;
-        const data = (await res.json()) as GeminiStatus;
-        if (!cancelled) setStatus(data);
+        const [geminiRes, openAiRes] = await Promise.all([fetch("/api/settings/gemini"), fetch("/api/settings/openai")]);
+        if (cancelled) return;
+        if (geminiRes.ok) setStatus((await geminiRes.json()) as GeminiStatus);
+        if (openAiRes.ok) {
+          const openAi = (await openAiRes.json()) as { forced?: boolean };
+          setOpenAiForced(openAi.forced === true);
+        }
       } catch {
         // The sidebar health check reports a dead API. This banner can stay quiet.
       }
@@ -34,10 +38,10 @@ export function ProviderNotice() {
     };
   }, []);
 
-  if (!status) return null;
-  const nearQuota = status.quotaUsed >= status.quotaLimit - 1 && status.quotaUsed > 0;
-  const onGroq = status.activeProvider === "groq";
-  if (!nearQuota && !onGroq) return null;
+  if (!status && !openAiForced) return null;
+  const nearQuota = Boolean(status && status.quotaUsed >= status.quotaLimit - 1 && status.quotaUsed > 0 && !openAiForced);
+  const onGroq = status?.activeProvider === "groq" && !openAiForced;
+  if (!nearQuota && !onGroq && !openAiForced) return null;
 
   async function resume() {
     const res = await fetch("/api/settings/gemini/resume", { method: "POST" });
@@ -45,14 +49,32 @@ export function ProviderNotice() {
     setStatus(await res.json());
   }
 
+  async function useGemini() {
+    const res = await fetch("/api/settings/openai", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ force: false }),
+    });
+    if (!res.ok) return;
+    setOpenAiForced(false);
+  }
+
   return (
     <div className="space-y-px">
-      {nearQuota && (
+      {openAiForced && (
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-info/40 bg-info/10 px-6 py-2.5 text-[13px] text-fg">
+          <p>New drafts are using OpenAI. Gemini and Groq are skipped until you turn this off.</p>
+          <Button variant="outline" size="sm" onClick={() => void useGemini()}>
+            Use Gemini again
+          </Button>
+        </div>
+      )}
+      {nearQuota && status && (
         <div className="border-b border-warning/40 bg-warning/10 px-6 py-2.5 text-[13px] text-fg">
           Gemini is about to hit its free limit: {status.quotaUsed} of {status.quotaLimit} requests in the last minute. The next limit switches writing to Groq.
         </div>
       )}
-      {onGroq && (
+      {onGroq && status && (
         <div className="flex flex-wrap items-center justify-between gap-3 border-b border-info/40 bg-info/10 px-6 py-2.5 text-[13px] text-fg">
           <p>
             Writing has switched to Groq{status.groqModel ? ` (${status.groqModel})` : ""}

@@ -35,7 +35,7 @@ export function UploadList({ campaigns }: { campaigns: Campaign[] }) {
   return (
     <div className="px-6 pt-5">
       {!open ? (
-        <Button variant="primary" size="sm" onClick={() => setOpen(true)}>Upload list</Button>
+        <Button variant="primary" size="sm" data-sim-target="add-recipients" onClick={() => setOpen(true)}>Upload list</Button>
       ) : (
         <Card className="mb-5">
           <CardHeader>

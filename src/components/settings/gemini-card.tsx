@@ -70,12 +70,11 @@ export function GeminiCard() {
   const usingGroq = status?.activeProvider === "groq";
 
   return (
-    <div className="max-w-5xl px-6 pt-5">
-      <Card>
+    <Card className="flex h-full flex-col">
         <CardHeader>
           <CardTitle>Gemini</CardTitle>
         </CardHeader>
-        <CardContent className="space-y-4">
+        <CardContent className="flex flex-1 flex-col gap-4">
           <p className="text-[12.5px] text-muted">
             {status?.configured
               ? `A key is active (${status.source === "saved" ? "saved here" : "server environment"}, ending ${status.keyHint}). Model ${status.model}.`
@@ -95,7 +94,7 @@ export function GeminiCard() {
             />
             <FieldHint>Replaces the key used for new emails. The full key is not shown again.</FieldHint>
           </div>
-          <div className="flex flex-wrap gap-2">
+          <div className="mt-auto flex flex-wrap gap-2">
             <Button variant="primary" size="sm" disabled={busy !== null || apiKey.trim().length < 20} onClick={() => void run("save")}>
               {busy === "save" ? "Saving…" : "Save key"}
             </Button>
@@ -109,7 +108,6 @@ export function GeminiCard() {
           {message && <p className="text-[12.5px] text-success">{message}</p>}
           {error && <p className="text-[12.5px] text-danger">{error}</p>}
         </CardContent>
-      </Card>
-    </div>
+    </Card>
   );
 }

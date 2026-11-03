@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { Wordmark } from "./wordmark";
 import { HealthIndicator, useHealth } from "./health-indicator";
 import { LogoutButton } from "./logout-button";
+import { useSimulation } from "@/components/simulation/simulation-provider";
 
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Overview", icon: LayoutDashboard },
@@ -21,6 +22,7 @@ const NAV_ITEMS = [
 export function Sidebar() {
   const pathname = usePathname();
   const health = useHealth();
+  const simulation = useSimulation();
   const unresolved = health?.unresolvedErrorGroups ?? 0;
 
   return (
@@ -60,6 +62,14 @@ export function Sidebar() {
       </nav>
 
       <div className="space-y-3 border-t border-border px-4 py-3">
+        <button
+          type="button"
+          onClick={simulation.start}
+          disabled={simulation.active}
+          className="flex h-9 w-full items-center justify-center rounded-md border border-border px-2.5 text-[12.5px] font-medium text-fg hover:bg-surface-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 disabled:cursor-not-allowed disabled:opacity-40"
+        >
+          {simulation.active ? "Simulation running" : "Play simulation"}
+        </button>
         <HealthIndicator health={health} />
         <LogoutButton />
       </div>

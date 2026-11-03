@@ -42,3 +42,12 @@ export function Label({ className, ...props }: React.LabelHTMLAttributes<HTMLLab
 export function FieldHint({ className, ...props }: React.HTMLAttributes<HTMLParagraphElement>) {
   return <p className={cn("mt-1.5 text-[11.5px] text-muted-faint", className)} {...props} />;
 }
+
+export function FieldError({ id, children }: { id?: string; children?: React.ReactNode }) {
+  if (!children) return null;
+  return (
+    <p id={id} role="alert" className="mt-1.5 text-[12px] text-danger">
+      {children}
+    </p>
+  );
+}

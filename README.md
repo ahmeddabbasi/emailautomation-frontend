@@ -23,6 +23,9 @@ Changing `BACKEND_URL` requires a new Vercel deployment.
 
 ## Notes
 
+- Settings can store an OpenAI key and switch new drafts to OpenAI when Gemini or Groq is limited. The key stays on the backend. Apply the backend migrations before saving a key.
+- Play simulation, in the sidebar, walks Overview, Campaigns, a new campaign, Leads, Testing, and Send history. It blocks saves and sends and restores the page you started on.
+
 - Mailgun webhooks and the dispatch cron must target the Render URL. They are configured in the backend repo.
 - Vercel request bodies are limited to about 4.5 MB, so keep a CSV upload under that size.
 - "Run dispatch now" waits for the backend tick through this proxy, which is capped at 60 seconds. The Render cron is what sends on schedule when a tick runs longer.

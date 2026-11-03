@@ -150,7 +150,7 @@ export function AnalyticsDashboard({ campaigns }: { campaigns: Campaign[] }) {
     <div>
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-border px-6 py-4">
         <div>
-          <h1 className="text-[18px] font-semibold tracking-tight text-fg">Overview</h1>
+          <h1 data-sim-target="view-results" className="text-[18px] font-semibold tracking-tight text-fg">Overview</h1>
           <p className="mt-1 text-[13px] text-muted">
             Live metrics from your database. Volumes cover the last 90 days; dates use Pakistan time.
           </p>

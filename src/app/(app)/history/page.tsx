@@ -8,7 +8,7 @@ export default async function HistoryPage() {
 
   return (
     <div>
-      <PageHeader title="Send history" description="Every send across every campaign." />
+      <PageHeader title="Send history" description="Every send across every campaign." simTarget="send-history" />
       <div className="px-6 py-5">
         <Card>
           <HistoryTable logs={logs} campaigns={campaigns} />

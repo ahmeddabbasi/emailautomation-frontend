@@ -307,7 +307,7 @@ function BriefCard({ overview, onSaved }: { overview: Overview; onSaved: (brief:
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className="flex-wrap gap-3">
         <CardTitle>Company brief used for generation</CardTitle>
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm" onClick={() => run("regenerate")} disabled={busy !== null || overview.enabledSources === 0}>
@@ -321,7 +321,7 @@ function BriefCard({ overview, onSaved }: { overview: Overview; onSaved: (brief:
       <CardContent className="space-y-3">
         {brief ? (
           <p className="text-[12px] text-muted">
-            <span className="font-medium text-fg">Version {brief.version}</span>, {brief.origin === "edited" ? "edited by hand" : `generated${brief.provider ? ` by ${brief.provider === "groq" ? "Groq" : "Gemini"}` : ""}`} on{" "}
+            <span className="font-medium text-fg">Version {brief.version}</span>, {brief.origin === "edited" ? "edited by hand" : `generated${brief.provider ? ` by ${brief.provider === "groq" ? "Groq" : brief.provider === "openai" ? "OpenAI" : "Gemini"}` : ""}`} on{" "}
             {formatDateTime(brief.createdAt)}. Every new email uses this version.
           </p>
         ) : (
@@ -573,7 +573,7 @@ export function KnowledgeBase() {
 
   if (error && !overview) {
     return (
-      <div className="px-6 py-5">
+      <div>
         <EmptyState
           icon={<AlertTriangle size={18} />}
           title="Couldn't load settings"
@@ -590,14 +590,14 @@ export function KnowledgeBase() {
 
   if (!overview) {
     return (
-      <div className="flex h-64 items-center justify-center text-muted">
+      <div className="flex h-40 items-center justify-center text-muted">
         <Loader2 size={18} className="animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="max-w-5xl space-y-5 px-6 py-5">
+    <div className="space-y-4">
       <BriefCard overview={overview} onSaved={(brief) => setOverview({ ...overview, brief, briefStale: false })} />
       <FactsCard initial={overview.facts} onSaved={reload} />
 

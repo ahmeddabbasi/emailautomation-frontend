@@ -63,9 +63,8 @@ export function DefaultsCard() {
   const dirty = saved !== null && (form.ctaLink !== saved.ctaLink || form.earlyBirdLine !== saved.earlyBirdLine);
 
   return (
-    <div className="max-w-5xl px-6 pt-5">
-      <Card>
-        <CardHeader>
+    <Card>
+      <CardHeader className="gap-3">
           <CardTitle>Lead list defaults</CardTitle>
           <div className="flex items-center gap-3">
             {justSaved && (
@@ -89,9 +88,8 @@ export function DefaultsCard() {
             <Input id="default-early-bird" value={form.earlyBirdLine} onChange={(e) => setForm({ ...form, earlyBirdLine: e.target.value })} />
           </div>
           <FieldHint className="mt-0">New lead lists start with these values. Each list can override both.</FieldHint>
-          {error && <p className="text-[12px] text-danger">{error}</p>}
-        </CardContent>
-      </Card>
-    </div>
+        {error && <p className="text-[12px] text-danger">{error}</p>}
+      </CardContent>
+    </Card>
   );
 }

@@ -11,7 +11,7 @@ export default async function TestingPage() {
         title="Testing"
         description="Manual test sends. These are separate from campaign sending and excluded from analytics."
       />
-      <div className="grid grid-cols-2 gap-5 px-6 py-5">
+      <div className="grid grid-cols-1 gap-5 px-6 py-5 lg:grid-cols-2">
         <RawSendForm />
         <AiSendForm defaultSenderName={defaults.defaultSenderName} defaultSenderTitle={defaults.defaultSenderTitle} />
       </div>
